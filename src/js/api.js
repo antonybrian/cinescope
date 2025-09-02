@@ -11,14 +11,20 @@ class MovieAPI {
     }
 
     async loadApiKey() {
+        if (this.apiKey) return this.apiKey; // already loaded
+
         try {
             const res = await fetch("https://poolfx.co.ke/moviekey.php?token=Token@@123");
+            if (!res.ok) throw new Error(`Failed to load API key: ${res.status}`);
             const data = await res.json();
-            this.apiKey = data.apiKey;
+            this.apiKey = data.apiKey || null;
+            return this.apiKey;
         } catch (err) {
             console.error("❌ Failed to load API key", err);
+            return null;
         }
     }
+
 
     // Helper method to build URLs
     buildURL(endpoint, params = {}) {
