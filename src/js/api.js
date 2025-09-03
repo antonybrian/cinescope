@@ -1,14 +1,6 @@
-class MovieAPI {
-    constructor() {
-        this.baseURL = 'https://api.themoviedb.org/3';
-        this.apiKey = null; // will be fetched
-        this.imageBaseURL = 'https://image.tmdb.org/t/p';
-        this.cache = new Map();
-        this.cacheExpiry = 5 * 60 * 1000;
 
-        // fetch API key once at startup
-        this.loadApiKey();
-    }
+class MovieAPI {
+
 
     async loadApiKey() {
         if (this.apiKey) return this.apiKey; // already loaded
@@ -24,6 +16,18 @@ class MovieAPI {
             return null;
         }
     }
+    constructor() {
+        this.baseURL = 'https://api.themoviedb.org/3';
+        this.apiKey = null; // will be fetched
+        this.imageBaseURL = 'https://image.tmdb.org/t/p';
+        this.cache = new Map();
+        this.cacheExpiry = 5 * 60 * 1000;
+
+        // fetch API key once at startup
+        this.loadApiKey();
+    }
+
+
 
 
     // Helper method to build URLs
