@@ -2,30 +2,29 @@
 class MovieAPI {
 
 
-    async loadApiKey() {
-        if (this.apiKey) return this.apiKey; // already loaded
-
-        try {
-            const res = await fetch("https://poolfx.co.ke/moviekey.php?token=Token@@123");
-            if (!res.ok) throw new Error(`Failed to load API key: ${res.status}`);
-            const data = await res.json();
-            this.apiKey = data.apiKey || null;
-            return this.apiKey;
-        } catch (err) {
-            console.error("❌ Failed to load API key", err);
-            return null;
-        }
-    }
     constructor() {
         this.baseURL = 'https://api.themoviedb.org/3';
-        this.apiKey = null; // will be fetched
+        this.apiKey = "4aa2bd1b618dc458bad8c6df942e551f"; // Fallback value
         this.imageBaseURL = 'https://image.tmdb.org/t/p';
         this.cache = new Map();
         this.cacheExpiry = 5 * 60 * 1000;
-
-        // fetch API key once at startup
-        this.loadApiKey();
+        this.ready = this.loadApiKey();
     }
+    
+    async loadApiKey() {
+        try {
+            const res = await fetch("https://poolfx.co.ke/moviekey.php?token=Token@@123");
+            if (res.ok) {
+                const data = await res.json();
+                this.apiKey = data.apiKey || this.apiKey;
+            }
+            return this.apiKey;
+        } catch (err) {
+            console.error("❌ Failed to fetch API key, using fallback", err);
+            return this.apiKey;
+        }
+    }
+    
 
 
 
